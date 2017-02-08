@@ -33,7 +33,10 @@ angular.module('akoenig.deckgrid').factory('DeckgridDescriptor', [
                             '</div>';
 
             this.scope = {
-                'model': '=source'
+                'model': '=source',
+                'filter': '=filter',
+                'orderBy': '=orderBy',
+                'orderDir': '=orderDir'
             };
 
             //

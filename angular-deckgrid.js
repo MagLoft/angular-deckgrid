@@ -61,7 +61,9 @@ angular.module('akoenig.deckgrid').factory('DeckgridDescriptor', [
 
             this.scope = {
                 'model': '=source',
-                'filter': '=filter'
+                'filter': '=filter',
+                'orderBy': '=orderBy',
+                'orderDir': '=orderDir'
             };
 
             //
@@ -176,7 +178,7 @@ angular.module('akoenig.deckgrid').factory('Deckgrid', [
          */
         function Deckgrid (scope, element) {
             var self = this,
-                watcher, 
+                watcher,
                 filterWatcher,
                 mql;
 
@@ -309,7 +311,14 @@ angular.module('akoenig.deckgrid').factory('Deckgrid', [
             }
 
             this.$$scope.columns = [];
-            angular.forEach($filter('filter')(this.$$scope.model, this.$$scope.filter), function onIteration (card, index) {
+            
+            var records;
+            if(this.$$scope.orderBy) {
+                records = $filter('orderBy')(this.$$scope.model, this.$$scope.orderBy, (this.$$scope.orderDir === 'desc'));
+            }else{
+                records = this.$$scope.model;
+            }
+            angular.forEach($filter('filter')(records, this.$$scope.filter), function onIteration (card, index) {
                 var column = (index % self.$$scope.layout.columns) | 0;
 
                 if (!self.$$scope.columns[column]) {
